@@ -113,10 +113,9 @@ Projects like this are useful because they force you to manage state continuousl
 
 # 📸 Screenshots
 
-```
 ![STST(Surface Typing speed test)](STST.png)
 
-```
+---
 
 # 🔥 Future Improvements
 
