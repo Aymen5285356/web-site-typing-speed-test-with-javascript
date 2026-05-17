@@ -114,7 +114,7 @@ Projects like this are useful because they force you to manage state continuousl
 # 📸 Screenshots
 
 ```
-![Typing Speed Test Screenshot](./STST.png)
+![STST(Surface Typing speed test)](STST.png)
 
 ```
 
