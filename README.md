@@ -113,8 +113,9 @@ Projects like this are useful because they force you to manage state continuousl
 
 # 📸 Screenshots
 
-```bash
+```
 ![Typing Speed Test Screenshot](./STST.png)
+
 ```
 
 # 🔥 Future Improvements
