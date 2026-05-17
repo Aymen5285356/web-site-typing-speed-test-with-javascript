@@ -14,7 +14,7 @@ The application dynamically tracks user input, calculates **Words Per Minute (WP
 here the link to the web site in vercel:
 
 ```bash
-[https://my-live-demo-link.vercel.app/](https://web-site-typing-test-speed-with-jav.vercel.app/)
+https://web-site-typing-test-speed-with-jav.vercel.app/
 ```
 
 ---
