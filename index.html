@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KEYFLOW — Typing Speed Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">KEYFLOW</span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <div class="header-right">
+        <span id="high-score-badge" class="hs-badge"></span>
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-time="60">60s</button>
+          <button class="mode-tab" data-time="30">30s</button>
+          <button class="mode-tab" data-time="15">15s</button>
+        </div>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+          <option value="code">Code</option>
+          <option value="darija">Darija</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="stats-row">
+      <div class="stat-card" id="card-wpm">
+        <div class="stat-val" id="wpm">0</div>
+        <div class="stat-key">WPM</div>
+        <div class="stat-bar"><div id="wpm-bar" class="stat-bar-fill"></div></div>
+      </div>
+      <div class="stat-card" id="card-acc">
+        <div class="stat-val" id="accuracy">100</div>
+        <div class="stat-key">ACC%</div>
+        <div class="stat-bar"><div id="acc-bar" class="stat-bar-fill acc"></div></div>
+      </div>
+      <div class="stat-card timer-card">
+        <div class="timer-ring">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="34" class="ring-bg"/>
+            <circle cx="40" cy="40" r="34" class="ring-fill" id="timer-ring-fill"/>
+          </svg>
+          <div class="timer-val" id="time">60</div>
+        </div>
+        <div class="stat-key">SEC</div>
+      </div>
+      <div class="stat-card" id="card-streak">
+        <div class="stat-val" id="streak">0</div>
+        <div class="stat-key">STREAK</div>
+        <div class="stat-bar"><div id="streak-bar" class="stat-bar-fill streak"></div></div>
+      </div>
+      <div class="stat-card" id="card-errors">
+        <div class="stat-val" id="errors">0</div>
+        <div class="stat-key">ERRORS</div>
+        <div class="stat-bar"><div id="err-bar" class="stat-bar-fill err"></div></div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div id="progress-bar"></div>
+      </div>
+      <span id="progress-label">0%</span>
+    </div>
+
+    <div class="quote-wrapper">
+      <div id="quote-box"></div>
+      <div class="quote-hint" id="quote-hint">Click the field below and start typing</div>
+    </div>
+
+    <div class="input-wrapper">
+      <div class="input-line-number">›</div>
+      <textarea
+        id="input-area"
+        placeholder="start typing..."
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+      ></textarea>
+      <div class="input-status" id="input-status"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn icon-btn" id="restart-btn" title="Restart (Esc)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        Restart
+      </button>
+      <button class="btn icon-btn" id="new-btn" title="New text (Tab)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Text
+      </button>
+      <button class="btn icon-btn" id="share-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+      <div class="spacer"></div>
+      <div class="key-hints">
+        <span><kbd>Tab</kbd> new</span>
+        <span><kbd>Esc</kbd> restart</span>
+      </div>
+    </div>
+
+    <div id="result-overlay" class="result-overlay">
+      <div class="result-card">
+        <div class="result-badge" id="result-badge">🏆</div>
+        <h2 id="result-title"></h2>
+        <div class="result-stats">
+          <div class="rs"><span id="r-wpm">0</span><small>WPM</small></div>
+          <div class="rs"><span id="r-acc">0%</span><small>Accuracy</small></div>
+          <div class="rs"><span id="r-streak">0</span><small>Best Streak</small></div>
+          <div class="rs"><span id="r-time">0s</span><small>Time</small></div>
+        </div>
+        <div class="result-chart">
+          <canvas id="wpm-chart" height="60"></canvas>
+        </div>
+        <p id="result-hs-msg" class="hs-msg"></p>
+        <div class="result-actions">
+          <button class="btn primary" onclick="resetGame(false)">Play Again</button>
+          <button class="btn" onclick="resetGame(true)">New Text</button>
+          <button class="btn" onclick="shareResult()">Share Result</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="typing-test.js"></script>
+</body>
+</html>
